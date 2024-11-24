@@ -23,21 +23,12 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Car = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
-const car_interface_1 = require("./car.interface");
-const carSchema = new mongoose_1.Schema({
-    brand: { type: String, required: true },
-    model: { type: String, required: true },
-    year: { type: Number, required: true },
-    price: { type: Number, required: true },
-    category: {
-        type: String,
-        enum: Object.values(car_interface_1.CarCategory),
-        required: true,
-    },
-    description: { type: String, required: true },
-    quantity: { type: Number, required: true },
-    inStock: { type: Boolean, required: true },
-}, { timestamps: true });
-exports.Car = mongoose_1.default.model("Car", carSchema);
+const orderSchema = new mongoose_1.Schema({
+    email: { type: String, required: true },
+    car: { type: mongoose_1.default.Schema.Types.ObjectId, ref: 'Car', required: true },
+    quantity: { type: Number, required: true, min: 1 },
+    totalPrice: { type: Number, required: true },
+});
+const Order = (0, mongoose_1.model)('Order', orderSchema);
+exports.default = Order;

@@ -8,21 +8,18 @@ const cors_1 = __importDefault(require("cors"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use((0, cors_1.default)());
-// Example route to trigger an error
 app.get('/error', (req, res, next) => {
-    // Simulate an error
     next(new Error('Something went wrong!'));
-});
-// Global error handling middleware
-app.use((err, req, res, next) => {
-    console.error('Error:', err.message); // Log the error (optional)
-    res.status(500).json({
-        success: false,
-        message: err.message || 'Internal Server Error',
-    });
 });
 // app.use('/api/');
 app.get('/', (req, res) => {
     res.send("Hello i'm alive");
+});
+app.use((err, req, res, next) => {
+    console.error('Error:', err.message);
+    res.status(500).json({
+        success: false,
+        message: err.message || 'Internal Server Error',
+    });
 });
 exports.default = app;
