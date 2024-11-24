@@ -2,12 +2,15 @@ import express, { NextFunction, Request, Response } from 'express'
 import cors from 'cors'
 import carRouter from './modules/car/car.route';
 import { ZodError } from 'zod';
+import orderRouter from './modules/order/order.route';
 
 const app = express();
 
 app.use(express.json());
 app.use(cors());
+
 app.use('/api/cars', carRouter);
+app.use('/api/orders', orderRouter);
 
 
 app.get('/', (req: Request, res: Response) => {

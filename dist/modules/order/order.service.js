@@ -12,22 +12,40 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.calculateRevenue = exports.createOrder = void 0;
+exports.orderService = void 0;
 const car_model_1 = require("../car/car.model");
 const order_model_1 = __importDefault(require("./order.model"));
 const createOrder = (data) => __awaiter(void 0, void 0, void 0, function* () {
     const car = yield car_model_1.Car.findById(data.car);
-    if (!car || car.quantity < data.quantity) {
+    if (!car) {
+        throw new Error("Car doesn't exist");
+    }
+    if (!car.inStock) {
+        throw new Error('Car is currently out of stock');
+    }
+    if (car.quantity < data.quantity) {
         throw new Error('Insufficient stock');
+    }
+    if (data.quantity <= 0) {
+        throw new Error('Quantity must be greater than zero');
     }
     car.quantity -= data.quantity;
     if (car.quantity === 0) {
         car.inStock = false;
     }
-    yield car.save();
-    return yield order_model_1.default.create(data);
+    try {
+        yield car.save();
+        const order = yield order_model_1.default.create(data);
+        return order;
+    }
+    catch (err) {
+        const error = err;
+        car.quantity += data.quantity;
+        car.inStock = true;
+        yield car.save();
+        throw new Error(`Order creation failed: ${error.message}`);
+    }
 });
-exports.createOrder = createOrder;
 const calculateRevenue = () => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const orders = yield order_model_1.default.aggregate([
@@ -35,4 +53,7 @@ const calculateRevenue = () => __awaiter(void 0, void 0, void 0, function* () {
     ]);
     return ((_a = orders[0]) === null || _a === void 0 ? void 0 : _a.totalRevenue) || 0;
 });
-exports.calculateRevenue = calculateRevenue;
+exports.orderService = {
+    createOrder,
+    calculateRevenue
+};

@@ -29,6 +29,6 @@ const orderSchema = new mongoose_1.Schema({
     car: { type: mongoose_1.default.Schema.Types.ObjectId, ref: 'Car', required: true },
     quantity: { type: Number, required: true, min: 1 },
     totalPrice: { type: Number, required: true },
-});
+}, { timestamps: true });
 const Order = (0, mongoose_1.model)('Order', orderSchema);
 exports.default = Order;

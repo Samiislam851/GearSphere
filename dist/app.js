@@ -7,10 +7,12 @@ const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const car_route_1 = __importDefault(require("./modules/car/car.route"));
 const zod_1 = require("zod");
+const order_route_1 = __importDefault(require("./modules/order/order.route"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use((0, cors_1.default)());
 app.use('/api/cars', car_route_1.default);
+app.use('/api/orders', order_route_1.default);
 app.get('/', (req, res) => {
     res.send("Hello i'm alive");
 });

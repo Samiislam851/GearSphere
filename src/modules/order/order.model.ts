@@ -7,7 +7,8 @@ const orderSchema = new Schema<OrderInterface>({
   car: { type: mongoose.Schema.Types.ObjectId, ref: 'Car', required: true },
   quantity: { type: Number, required: true, min: 1 },
   totalPrice: { type: Number, required: true },
-});
+},
+{ timestamps: true });
 
 const Order = model<OrderInterface>('Order', orderSchema);
 export default Order;
