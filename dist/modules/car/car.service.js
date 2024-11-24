@@ -12,7 +12,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.carService = void 0;
 const car_model_1 = require("./car.model");
 const createCar = (data) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield car_model_1.Car.create(data);
+    const existingCar = yield car_model_1.Car.findOne({
+        brand: data.brand,
+        model: data.model,
+        year: data.year,
+        price: data.price
+    });
+    if (existingCar) {
+        throw new Error("This car already exists");
+    }
+    else {
+        return yield car_model_1.Car.create(data);
+    }
 });
 const getAllCars = (searchTerm) => __awaiter(void 0, void 0, void 0, function* () {
     const filter = searchTerm ? { $or: [{ brand: searchTerm }, { model: searchTerm }, { category: searchTerm }] } : {};

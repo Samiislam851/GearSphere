@@ -1,12 +1,16 @@
+import mongoose from "mongoose";
 import app from "./app";
+import config from "./app/config";
 
 async function main() {
-    const port = 5000
     try {
         // create db connection
-        app.listen(port, () => {
+        const result = await mongoose.connect(config.database_url as string)
+        console.log('connected to DB at host ', result.connection.host, ', database : ',result.connection.name);
 
-            console.log('Listening to port ', port);
+
+        app.listen(config.port, () => {
+            console.log('Listening to port ', config.port);
 
         })
     } catch (error) {

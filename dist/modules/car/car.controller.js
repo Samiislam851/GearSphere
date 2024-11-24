@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.carController = void 0;
 const car_service_1 = require("./car.service");
 const car_validation_1 = require("./car.validation");
-const createCar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const createCar = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const validationRes = car_validation_1.carValidationSchema.parse(req.body);
         const car = yield car_service_1.carService.createCar(validationRes);
@@ -20,17 +20,25 @@ const createCar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     catch (error) {
         const err = error;
-        res.status(500).json({ message: 'Failed to create car', success: false, error: err.message });
+        next(err);
     }
 });
-const getAllCars = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const getAllCars = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const cars = yield car_service_1.carService.getAllCars(req.query.searchTerm);
-        res.status(200).json({ message: 'Cars retrieved successfully', success: true, data: cars });
+        if (cars.length === 0) {
+            res.status(404).json({
+                success: false,
+                message: `No cars found matching ${req.query.searchTerm}`,
+            });
+        }
+        else {
+            res.status(200).json({ message: 'Cars retrieved successfully', success: true, data: cars });
+        }
     }
     catch (error) {
         const err = error;
-        res.status(500).json({ message: 'Failed to retrieve cars', success: false, error: err.message });
+        next(err);
     }
 });
 const getCarById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -40,10 +48,10 @@ const getCarById = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
     catch (error) {
         const err = error;
-        res.status(404).json({ message: 'Car not found', success: false, error: err.message });
+        res.status(404).json({ message: 'Car not found', success: false, error: err, stack: err.stack });
     }
 });
-const updateCar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const updateCar = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const validatedRes = car_validation_1.carValidationSchema.partial().parse(req.body);
         const updatedCar = yield car_service_1.carService.updateCar(req.params.carId, validatedRes);
@@ -51,13 +59,13 @@ const updateCar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     catch (error) {
         const err = error;
-        res.status(500).json({ message: 'Failed to update car', success: false, error: err.message });
+        next(err);
     }
 });
 const deleteCar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        yield car_service_1.carService.deleteCar(req.params.carId);
-        res.status(200).json({ message: 'Car deleted successfully', success: true, data: {} });
+        const delResponse = yield car_service_1.carService.deleteCar(req.params.carId);
+        res.status(200).json({ message: 'Car deleted successfully', success: true, data: delResponse });
     }
     catch (error) {
         const err = error;

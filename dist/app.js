@@ -5,21 +5,38 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
+const car_route_1 = __importDefault(require("./modules/car/car.route"));
+const zod_1 = require("zod");
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use((0, cors_1.default)());
-app.get('/error', (req, res, next) => {
-    next(new Error('Something went wrong!'));
-});
-// app.use('/api/');
+app.use('/api/cars', car_route_1.default);
 app.get('/', (req, res) => {
     res.send("Hello i'm alive");
 });
-app.use((err, req, res, next) => {
-    console.error('Error:', err.message);
-    res.status(500).json({
+app.use((req, res) => {
+    res.status(404).json({
         success: false,
-        message: err.message || 'Internal Server Error',
+        message: 'Route not found',
     });
+});
+app.use((err, req, res, next) => {
+    console.error('Error:', err);
+    if (err instanceof zod_1.ZodError) {
+        res.status(400).json({
+            success: false,
+            message: 'Validation error',
+            error: err.issues,
+            stack: err.stack
+        });
+    }
+    else {
+        res.status(500).json({
+            success: false,
+            message: err.message || 'Internal Server Error',
+            error: err,
+            stack: err.stack
+        });
+    }
 });
 exports.default = app;
