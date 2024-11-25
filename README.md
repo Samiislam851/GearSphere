@@ -15,16 +15,18 @@ An Express application built with TypeScript, integrating MongoDB via Mongoose t
 - Mongoose schema validation for Cars and Orders.
 - Generic error response structure for validation errors, resource not found, and insufficient stock.
 # Technologies Used
-Backend Framework: Express.js
-Database: MongoDB with Mongoose
-Programming Language: TypeScript
-Installation
-Prerequisites
-Ensure you have the following installed:
+- Backend Framework: Express.js
+- Database: MongoDB with Mongoose
+- Programming Language: TypeScript
 
-Node.js (v16 or later)
-npm or yarn
-MongoDB
+# Installation
+#### Prerequisites
+Ensure you have the following installed:
+````
+ . Node.js (v16 or later)
+ . npm or yarn
+ . MongoDB
+````
 Steps to Run the Project Locally
 Clone the repository:
 
