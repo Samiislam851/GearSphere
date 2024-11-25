@@ -54,14 +54,14 @@ The server will start on http://localhost:5000.
 
 # API Endpoints
 ## Cars
-- ** POST `/api/cars` : **   Create a new car.
-- GET /api/cars: Retrieve all cars or filter by search terms (brand, model, or category).
-- GET /api/cars/:carId: Retrieve a specific car by ID.
-- PUT /api/cars/:carId: Update car details.
-- DELETE /api/cars/:carId: Delete a car.
+- **POST** `/api/cars` :    Create a new car.
+- **GET** `/api/cars`: Retrieve all cars or filter by search terms (brand, model, or category).
+- **GET** `/api/cars/:carId` : Retrieve a specific car by ID.
+- **PUT** `/api/cars/:carId` : Update car details.
+- **DELETE** `/api/cars/:carId` : Delete a car.
 ## Orders
-- POST /api/orders: Place an order for a car.
-- GET /api/orders/revenue: Calculate total revenue from all orders.
+- **POST** `/api/orders` : Place an order for a car.
+- **GET** `/api/orders/revenue`: Calculate total revenue from all orders.
 
 
 
