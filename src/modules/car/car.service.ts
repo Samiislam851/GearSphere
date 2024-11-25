@@ -1,3 +1,4 @@
+import { Types } from 'mongoose';
 import { CarInterface } from './car.interface';
 import { Car } from './car.model';
 
@@ -29,15 +30,31 @@ const getAllCars = async (searchTerm: string | undefined) => {
 };
 
 const getCarById = async (carId: string) => {
-  return await Car.findById(carId);
+  const car = await Car.findById(carId);
+  if (!car) {
+    throw new Error('Car not found');
+  }
+  return car;
 };
 
 const updateCar = async (carId: string, data: Partial<CarInterface>) => {
-  return await Car.findByIdAndUpdate(carId, data, { new: true });
+  const result = await Car.updateOne(
+    { _id: new Types.ObjectId(carId) },
+    { $set: data },
+    { new: true },
+  );
+  if (result.acknowledged) {
+    return await getCarById(carId);
+  }
+  return result;
 };
 
 const deleteCar = async (carId: string) => {
-  return await Car.findByIdAndDelete(carId);
+  const car = await Car.findById(carId);
+  if (!car) {
+    throw new Error('Car not found');
+  }
+  return await Car.deleteOne({ _id: new Types.ObjectId(carId) });
 };
 
 export const carService = {
