@@ -15,9 +15,13 @@ const order_validation_1 = require("./order.validation");
 const createOrder = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const validatedRes = order_validation_1.OrderSchema.parse(req.body);
-        console.log("🚀 ~ createOrder ~ validatedRes:", validatedRes);
+        console.log('🚀 ~ createOrder ~ validatedRes:', validatedRes);
         const order = yield order_service_1.orderService.createOrder(req.body);
-        res.status(201).json({ message: 'Order created successfully', success: true, data: order });
+        res.status(201).json({
+            message: 'Order created successfully',
+            success: true,
+            data: order,
+        });
     }
     catch (error) {
         const err = error;
@@ -27,14 +31,22 @@ const createOrder = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
 const calculateRevenue = (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const revenue = yield order_service_1.orderService.calculateRevenue();
-        res.status(200).json({ message: 'Revenue calculated successfully', success: true, data: { totalRevenue: revenue } });
+        res.status(200).json({
+            message: 'Revenue calculated successfully',
+            success: true,
+            data: { totalRevenue: revenue },
+        });
     }
     catch (error) {
         const err = error;
-        res.status(500).json({ message: 'Failed to calculate revenue', success: false, error: err.message });
+        res.status(500).json({
+            message: 'Failed to calculate revenue',
+            success: false,
+            error: err.message,
+        });
     }
 });
 exports.orderController = {
     createOrder,
-    calculateRevenue
+    calculateRevenue,
 };

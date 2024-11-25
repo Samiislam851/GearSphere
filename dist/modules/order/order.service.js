@@ -55,5 +55,5 @@ const calculateRevenue = () => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.orderService = {
     createOrder,
-    calculateRevenue
+    calculateRevenue,
 };

@@ -16,7 +16,9 @@ const createCar = (req, res, next) => __awaiter(void 0, void 0, void 0, function
     try {
         const validationRes = car_validation_1.carValidationSchema.parse(req.body);
         const car = yield car_service_1.carService.createCar(validationRes);
-        res.status(201).json({ message: 'Car created successfully', success: true, data: car });
+        res
+            .status(201)
+            .json({ message: 'Car created successfully', success: true, data: car });
     }
     catch (error) {
         const err = error;
@@ -33,7 +35,13 @@ const getAllCars = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
             });
         }
         else {
-            res.status(200).json({ message: 'Cars retrieved successfully', success: true, data: cars });
+            res
+                .status(200)
+                .json({
+                message: 'Cars retrieved successfully',
+                success: true,
+                data: cars,
+            });
         }
     }
     catch (error) {
@@ -44,18 +52,37 @@ const getAllCars = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
 const getCarById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const car = yield car_service_1.carService.getCarById(req.params.carId);
-        res.status(200).json({ message: 'Car retrieved successfully', success: true, data: car });
+        res
+            .status(200)
+            .json({
+            message: 'Car retrieved successfully',
+            success: true,
+            data: car,
+        });
     }
     catch (error) {
         const err = error;
-        res.status(404).json({ message: 'Car not found', success: false, error: err, stack: err.stack });
+        res
+            .status(404)
+            .json({
+            message: 'Car not found',
+            success: false,
+            error: err,
+            stack: err.stack,
+        });
     }
 });
 const updateCar = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const validatedRes = car_validation_1.carValidationSchema.partial().parse(req.body);
         const updatedCar = yield car_service_1.carService.updateCar(req.params.carId, validatedRes);
-        res.status(200).json({ message: 'Car updated successfully', success: true, data: updatedCar });
+        res
+            .status(200)
+            .json({
+            message: 'Car updated successfully',
+            success: true,
+            data: updatedCar,
+        });
     }
     catch (error) {
         const err = error;
@@ -64,12 +91,20 @@ const updateCar = (req, res, next) => __awaiter(void 0, void 0, void 0, function
 });
 const deleteCar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const delResponse = yield car_service_1.carService.deleteCar(req.params.carId);
-        res.status(200).json({ message: 'Car deleted successfully', success: true, data: delResponse });
+        yield car_service_1.carService.deleteCar(req.params.carId);
+        res.status(200).json({
+            message: 'Car deleted successfully',
+            success: true,
+            data: {},
+        });
     }
     catch (error) {
         const err = error;
-        res.status(500).json({ message: 'Failed to delete car', success: false, error: err.message });
+        res.status(500).json({
+            message: 'Failed to delete car',
+            success: false,
+            error: err.message,
+        });
     }
 });
 exports.carController = {
@@ -77,5 +112,5 @@ exports.carController = {
     getAllCars,
     getCarById,
     updateCar,
-    deleteCar
+    deleteCar,
 };

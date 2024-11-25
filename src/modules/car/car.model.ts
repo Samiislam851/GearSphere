@@ -1,6 +1,5 @@
-import mongoose, { Schema, Document, Model } from "mongoose";
-import { CarCategory, CarInterface } from "./car.interface";
-
+import mongoose, { Model, Schema } from 'mongoose';
+import { CarCategory, CarInterface } from './car.interface';
 
 const carSchema = new Schema<CarInterface>(
   {
@@ -17,7 +16,10 @@ const carSchema = new Schema<CarInterface>(
     quantity: { type: Number, required: true },
     inStock: { type: Boolean, required: true },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
-export const Car: Model<CarInterface> = mongoose.model<CarInterface>("Car", carSchema);
+export const Car: Model<CarInterface> = mongoose.model<CarInterface>(
+  'Car',
+  carSchema,
+);

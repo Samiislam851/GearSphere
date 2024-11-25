@@ -3,10 +3,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
-const car_route_1 = __importDefault(require("./modules/car/car.route"));
+const express_1 = __importDefault(require("express"));
 const zod_1 = require("zod");
+const car_route_1 = __importDefault(require("./modules/car/car.route"));
 const order_route_1 = __importDefault(require("./modules/order/order.route"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
@@ -22,14 +22,14 @@ app.use((req, res) => {
         message: 'Route not found',
     });
 });
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
     console.error('Error:', err);
     if (err instanceof zod_1.ZodError) {
         res.status(400).json({
             success: false,
             message: 'Validation error',
             error: err.issues,
-            stack: err.stack
+            stack: err.stack,
         });
     }
     else {
@@ -37,7 +37,7 @@ app.use((err, req, res, next) => {
             success: false,
             message: err.message || 'Internal Server Error',
             error: err,
-            stack: err.stack
+            stack: err.stack,
         });
     }
 });

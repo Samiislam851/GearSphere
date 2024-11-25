@@ -40,4 +40,4 @@ const carSchema = new mongoose_1.Schema({
     quantity: { type: Number, required: true },
     inStock: { type: Boolean, required: true },
 }, { timestamps: true });
-exports.Car = mongoose_1.default.model("Car", carSchema);
+exports.Car = mongoose_1.default.model('Car', carSchema);

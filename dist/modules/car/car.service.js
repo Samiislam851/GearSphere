@@ -16,17 +16,25 @@ const createCar = (data) => __awaiter(void 0, void 0, void 0, function* () {
         brand: data.brand,
         model: data.model,
         year: data.year,
-        price: data.price
+        price: data.price,
     });
     if (existingCar) {
-        throw new Error("This car already exists");
+        throw new Error('This car already exists');
     }
     else {
         return yield car_model_1.Car.create(data);
     }
 });
 const getAllCars = (searchTerm) => __awaiter(void 0, void 0, void 0, function* () {
-    const filter = searchTerm ? { $or: [{ brand: searchTerm }, { model: searchTerm }, { category: searchTerm }] } : {};
+    const filter = searchTerm
+        ? {
+            $or: [
+                { brand: searchTerm },
+                { model: searchTerm },
+                { category: searchTerm },
+            ],
+        }
+        : {};
     return yield car_model_1.Car.find(filter);
 });
 const getCarById = (carId) => __awaiter(void 0, void 0, void 0, function* () {
@@ -43,5 +51,5 @@ exports.carService = {
     getAllCars,
     getCarById,
     updateCar,
-    deleteCar
+    deleteCar,
 };
